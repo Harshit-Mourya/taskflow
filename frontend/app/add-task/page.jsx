@@ -17,7 +17,7 @@ export default function AddTaskPage() {
       dueDate: "",
       details: "",
       priority: "",
-      subtasks: [{ text: "", done: false }],
+      subtasks: [],
     }),
     []
   );
@@ -46,7 +46,7 @@ export default function AddTaskPage() {
           handleSubmit={handleSubmit}
           submitLabel="Add Task"
         />
-      </div>{" "}
+      </div>
     </ProtectedRoute>
   );
 }

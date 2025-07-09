@@ -46,6 +46,7 @@ export default function TaskForm({
                 checked={form.priority === level}
                 onChange={handleChange}
                 className="accent-purple-600 w-4 h-4"
+                required
               />
               <span
                 className={`text-sm ${

@@ -56,12 +56,9 @@ const createTask = async (req, res) => {
     });
 
     const savedTask = await newTask.save();
-    console.log("Task created!");
 
     res.status(201).json(savedTask);
   } catch (err) {
-    console.log(err);
-
     res.status(500).json({ error: "Failed to create task!" });
   }
 };

@@ -77,11 +77,13 @@ export default function TaskItem({ task }) {
               Details:&nbsp;{task.details}
             </p>
           )}
-          <SubtaskList
-            taskId={task._id}
-            subtasks={task.subtasks}
-            onToggle={toggleSubtaskStatus}
-          />
+          {task.subtasks && task.subtasks.length > 0 && (
+            <SubtaskList
+              taskId={task._id}
+              subtasks={task.subtasks}
+              onToggle={toggleSubtaskStatus}
+            />
+          )}
         </div>
       </div>
       <div className="space-x-2">
