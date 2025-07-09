@@ -9,7 +9,11 @@ const taskRoutes = require("./routes/taskRoutes");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = ["https://hoppscotch.io", "http://localhost:3000"];
+const allowedOrigins = [
+  "https://taskflow-frontend-five.vercel.app/",
+  "https://hoppscotch.io",
+  "http://localhost:3000",
+];
 
 const corsOptions = {
   origin: function (origin, callback) {
