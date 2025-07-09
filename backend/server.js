@@ -9,7 +9,24 @@ const taskRoutes = require("./routes/taskRoutes");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+const allowedOrigins = ["https://hoppscotch.io", "http://localhost:3000"];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like curl, Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS!"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);

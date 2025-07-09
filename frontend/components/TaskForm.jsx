@@ -132,7 +132,7 @@ export default function TaskForm({
 
       <button
         type="submit"
-        className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition-colors"
+        className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition-colors cursor-pointer"
       >
         {submitLabel}
       </button>
