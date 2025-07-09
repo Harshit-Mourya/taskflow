@@ -55,12 +55,7 @@ This is my first project using Next.js and represents an important step in my we
 
 ---
 
-## Project Structure
-
-taskflow/
-├── backend/ # Express API
-├── frontend/ # Next.js frontend
-└── dump/ # Sample MongoDB dump
+<pre><code>### Project Structure ``` taskflow/ ├── backend/ # Express API for authentication and task management ├── frontend/ # Next.js frontend with UI and dashboard └── dump/ # Sample MongoDB dump for seeding the database ``` </code></pre>
 
 ---
 
