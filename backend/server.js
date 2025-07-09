@@ -10,14 +10,14 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
-  "https://taskflow-frontend-five.vercel.app/",
+  "https://taskflow-frontend-five.vercel.app",
+  "https://taskflow-frontend-harshit-mouryas-projects-0d42cca2.vercel.app",
   "https://hoppscotch.io",
   "http://localhost:3000",
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like curl, Postman)
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {
