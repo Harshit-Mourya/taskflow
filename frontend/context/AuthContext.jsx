@@ -11,6 +11,8 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
+      setLoading(true);
+
       const res = await axios.get("/auth/me");
       setUser(res.data);
     } catch (err) {
@@ -22,23 +24,30 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (form) => {
     try {
+      setLoading(true);
+
       const res = await axios.post("/auth/register", form);
       localStorage.setItem("token", res.data.token);
       await fetchUser();
       toast.success("Registered & logged in!");
     } catch (err) {
       toast.error(err?.response?.data?.error || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   const login = async (form) => {
     try {
+      setLoading(true);
       const res = await axios.post("/auth/login", form);
       localStorage.setItem("token", res.data.token);
       await fetchUser();
       toast.success("Login successful!");
     } catch (err) {
       toast.error(err?.response?.data?.error || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 

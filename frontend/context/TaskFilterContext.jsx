@@ -12,16 +12,25 @@ export const TaskFilterProvider = ({ children }) => {
     pendingTasks: [],
     completedTasks: [],
   });
+  const [loading, setLoading] = useState(false);
 
   const loadTasks = useCallback(
     async ({ filters: newFilters = {}, replace = false } = {}) => {
       const finalFilters = replace ? newFilters : { ...filters, ...newFilters };
       setFilters(finalFilters);
 
-      await loadAndSetTasks({
-        filters: finalFilters,
-        setTaskData,
-      });
+      setLoading(true);
+
+      try {
+        await loadAndSetTasks({
+          filters: finalFilters,
+          setTaskData,
+        });
+      } catch (err) {
+        console.error("Error loading tasks:", err);
+      } finally {
+        setLoading(false);
+      }
     },
     []
   );
@@ -37,6 +46,7 @@ export const TaskFilterProvider = ({ children }) => {
         filters,
         resetSignal,
         taskData,
+        loading,
         setTaskData,
         loadTasks,
         handleViewAll,

@@ -73,7 +73,7 @@ export default function TaskItem({ task }) {
             Due:&nbsp;{formatDate(task.dueDate)}
           </p>
           {task.details && (
-            <p className="text-sm text-gray-300 mt-1">
+            <p className="text-sm text-gray-300 mt-1 2xl:max-w-md xl:max-w-xs lg:max-w-2xs md:max-w-lg max-w-xs">
               Details:&nbsp;{task.details}
             </p>
           )}
@@ -86,7 +86,7 @@ export default function TaskItem({ task }) {
           )}
         </div>
       </div>
-      <div className="space-x-2">
+      <div className="sm:space-x-2 space-x-0 sm:ml-0 ml-2 flex flex-col gap-2 sm:block">
         <Link href={`/edit/${task._id}`}>
           <button
             className={`inline-flex items-center xl:px-3 px-2 xl:py-1 py-2 rounded text-sm transition-all  ${

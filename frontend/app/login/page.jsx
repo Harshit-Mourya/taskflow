@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import { toast } from "react-hot-toast";
+import Loader from "@/components/Loader";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,6 +24,10 @@ export default function LoginPage() {
       toast.error("Login failed!");
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-[92vh] bg-gray-900">

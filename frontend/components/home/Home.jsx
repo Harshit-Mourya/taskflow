@@ -1,21 +1,18 @@
 "use client";
 
-import { useEffect } from "react";
 import CalendarView from "../calendar/CalendarView";
-import { useTaskFilter } from "@/context/TaskFilterContext.jsx";
 import WelcomeHome from "./WelcomeHome";
+import Loader from "../Loader";
 
 import Link from "next/link";
 import useAuth from "@/hooks/useAuth";
 
 export default function Home() {
-  const { user } = useAuth();
-  const { taskData, loadTasks } = useTaskFilter();
-  const { pendingTasks } = taskData;
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    loadTasks();
-  }, []);
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-gray-700 to-gray-900 text-white px-4 py-8 sm:px-6">
@@ -30,7 +27,7 @@ export default function Home() {
             <p className="mb-6 text-lg">Let’s get you back on track!</p>
             <Link
               href="/dashboard"
-              className="inline-block px-6 py-3 hover:bg-purple-600 rounded border border-purple-600 transition"
+              className="inline-block px-6 py-3 hover:bg-purple-600 rounded border border-purple-600 transition mb-10"
             >
               Go to Dashboard
             </Link>
@@ -52,7 +49,7 @@ export default function Home() {
           </div>
         )}
 
-        <CalendarView />
+        {user && <CalendarView />}
 
         {/* {pendingTasks.length > 0 && (
           <div className="mt-8 w-full">

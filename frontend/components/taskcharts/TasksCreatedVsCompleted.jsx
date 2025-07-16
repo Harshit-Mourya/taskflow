@@ -158,10 +158,9 @@ export default function TasksCreatedVsCompleted() {
             </XAxis>
             <YAxis allowDecimals={false} stroke="#ccc">
               <Label
-                value="Completed Tasks"
+                value="Tasks"
                 angle={-90}
-                offset={20}
-                dy={50}
+                offset={25}
                 position="insideLeft"
                 fill="#ccc"
               />

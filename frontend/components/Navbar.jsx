@@ -12,6 +12,7 @@ import {
   faUser,
   faRightToBracket,
   faUserPlus,
+  faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Navbar() {
@@ -74,6 +75,14 @@ export default function Navbar() {
                 >
                   <FontAwesomeIcon icon={faUser} className="mr-2" />
                   Dashboard
+                </Link>
+                <Link
+                  href="/calendar"
+                  className="block px-4 py-2 hover:bg-gray-600"
+                  onClick={() => setDropdownOpen(false)}
+                >
+                  <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
+                  View Calendar
                 </Link>
                 <button
                   onClick={handleLogout}

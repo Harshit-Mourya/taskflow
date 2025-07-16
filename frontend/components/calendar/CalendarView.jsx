@@ -6,9 +6,10 @@ import useCalendar from "@/hooks/useCalendar";
 import CalendarHeader from "./CalendarHeader";
 import CalendarGrid from "./CalendarGrid";
 import CalendarTaskList from "./CalendarTaskList";
+import Loader from "../Loader";
 
 export default function CalendarView() {
-  const { taskData, loadTasks } = useTaskFilter();
+  const { taskData, loadTasks, loading } = useTaskFilter();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const { selectedDate, handleDateClick, setSelectedDate } = useCalendar();
 
@@ -16,8 +17,12 @@ export default function CalendarView() {
     loadTasks({ filters: {} });
   }, [loadTasks]);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className=" bg-gray-900 text-white p-4 mt-10 rounded w-full">
+    <div className=" bg-gray-900 text-white p-4 rounded w-full">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <CalendarHeader
