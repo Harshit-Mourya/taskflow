@@ -14,6 +14,7 @@ import {
   faUserPlus,
   faCalendarAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -43,7 +44,11 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-800 text-white px-6 py-4 flex justify-between items-center shadow-md border-b border-white sticky top-0 z-50">
       {/* Left: Logo */}
-      <Link href="/" className="text-2xl font-bold text-purple-400">
+      <Link
+        href="/"
+        className="text-2xl font-bold text-purple-400 flex gap-2 items-center"
+      >
+        <Image src="/taskflow_logo.png" alt="Logo" width={30} height={30} />
         TaskFlow
       </Link>
 

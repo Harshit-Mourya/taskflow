@@ -16,7 +16,7 @@ export default function SubtaskList({ taskId, subtasks, onToggle }) {
       <div ref={dropdownRef}>
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="flex items-center gap-2   "
+          className="flex items-center gap-2"
         >
           <p className="text-sm font-semibold text-gray-300 mb-1">Subtasks</p>
 

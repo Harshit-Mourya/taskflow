@@ -1,23 +1,45 @@
 "use client";
+
+import { useState, useRef, useEffect } from "react";
+
 import Link from "next/link";
 import { useTaskActions } from "@/hooks/useTaskActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEdit,
+  faTrash,
+  faEllipsisV,
+} from "@fortawesome/free-solid-svg-icons";
 import SubtaskList from "./SubtaskList";
 import { formatDate } from "@/utils/formatDate";
 import { getDueStatus, getTaskStyles } from "@/utils/taskStyling";
 
 export default function TaskItem({ task }) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const { toggleTaskCompletion, deleteTask, toggleSubtaskStatus } =
     useTaskActions();
 
   const status = getDueStatus(task.dueDate, task.completed);
   const taskStyles = getTaskStyles(status);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    // <li className="bg-gray-800 sm:p-4 p-2 rounded shadow-md flex justify-between items-center border-2 border-gray-600">
     <li
-      className={`sm:p-4 p-2 rounded shadow-md flex justify-between items-center border-2 ${taskStyles}`}
+      className={`sm:p-4 p-2 rounded shadow-md flex justify-between items-center relative border-2 ${taskStyles}`}
     >
       <div className="flex">
         <div className="flex items-center mr-2">
@@ -29,7 +51,6 @@ export default function TaskItem({ task }) {
           />
         </div>
         <div>
-          {/* <div className="flex gap-2 items-center "> */}
           <h2
             className={`text-base sm:text-xl font-semibold ${
               task.completed ? "line-through text-gray-500" : ""
@@ -47,28 +68,7 @@ export default function TaskItem({ task }) {
               title={task.priority}
             ></span>
           </h2>
-          {/* <span
-              className={`w-3 h-3 rounded-full inline-block ${
-                task.priority === "High"
-                  ? "bg-red-500"
-                  : task.priority === "Medium"
-                  ? "bg-yellow-400"
-                  : "bg-green-500"
-              }`}
-              title={task.priority} // Optional: shows tooltip on hover
-            ></span> */}
-          {/* <span
-              className={`text-xs px-2 py-1 rounded font-semibold ${
-                task.priority === "High"
-                  ? "bg-red-500"
-                  : task.priority === "Medium"
-                  ? "bg-yellow-500 text-black"
-                  : "bg-green-500"
-              }`}
-            >
-              {task.priority}
-            </span> */}
-          {/* </div> */}
+
           <p className="text-sm text-gray-400 mt-1">
             Due:&nbsp;{formatDate(task.dueDate)}
           </p>
@@ -86,7 +86,7 @@ export default function TaskItem({ task }) {
           )}
         </div>
       </div>
-      <div className="sm:space-x-2 space-x-0 sm:ml-0 ml-2 flex flex-col gap-2 sm:block">
+      {/* <div className="2xl:space-x-2 2xl:ml-0 ml-2 flex flex-col items-center gap-2 2xl:block">
         <Link href={`/edit/${task._id}`}>
           <button
             className={`inline-flex items-center xl:px-3 px-2 xl:py-1 py-2 rounded text-sm transition-all  ${
@@ -107,7 +107,46 @@ export default function TaskItem({ task }) {
           <FontAwesomeIcon icon={faTrash} />
           <span className="xl:block hidden ml-1">Delete</span>
         </button>
+      </div> */}
+      <div
+        className="absolute top-1 right-1  text-white rounded-full px-1.5 py-0.5 hover:bg-gray-600 transition duration-200"
+        ref={dropdownRef}
+      >
+        <FontAwesomeIcon
+          icon={faEllipsisV}
+          className="w-4 h-4"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        />
       </div>
+
+      {dropdownOpen && (
+        <div
+          className="absolute right-4 top-8 w-25 bg-transparent rounded-md shadow-lg  z-50 space-y-1"
+          ref={dropdownRef}
+        >
+          <Link href={`/edit/${task._id}`}>
+            <button
+              className={`w-full flex items-center justify-start gap-2 px-4 py-2 text-sm rounded-t-md transition-colors ${
+                task.completed
+                  ? "bg-gray-600 text-gray-300 cursor-not-allowed opacity-60"
+                  : "bg-yellow-600 hover:bg-yellow-700 text-white cursor-pointer"
+              }`}
+              disabled={task.completed}
+            >
+              <FontAwesomeIcon icon={faEdit} />
+              <span>Edit</span>
+            </button>
+          </Link>
+
+          <button
+            className="w-full flex items-center justify-start gap-2 px-4 py-2 text-sm rounded-b-md bg-red-600 hover:bg-red-700 text-white transition-colors"
+            onClick={() => deleteTask(task._id)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+            <span>Delete</span>
+          </button>
+        </div>
+      )}
     </li>
   );
 }

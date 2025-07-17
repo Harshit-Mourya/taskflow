@@ -1,35 +1,15 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import axios from "@/lib/axiosInstance";
 import TaskForm from "@/components/TaskForm";
 import useTaskForm from "@/hooks/useTaskForm";
+import useAddTask from "@/hooks/useAddTask";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { useMemo } from "react";
 
 export default function AddTaskPage() {
-  const router = useRouter();
-
-  const initialData = useMemo(
-    () => ({
-      title: "",
-      dueDate: "",
-      details: "",
-      priority: "",
-      subtasks: [],
-    }),
-    []
-  );
+  const { form: initialData, addTask, creating } = useAddTask();
 
   const handleAdd = async (form) => {
-    try {
-      await axios.post("/tasks", form); // No need to add headers
-      toast.success("Task added successfully!");
-      router.push("/dashboard");
-    } catch (err) {
-      toast.error(err?.response?.data?.error || "Failed to create task!");
-    }
+    await addTask(form);
   };
 
   const { form, handleChange, handleSubmit } = useTaskForm(
@@ -45,6 +25,8 @@ export default function AddTaskPage() {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
           submitLabel="Add Task"
+          submittingLabel="Creating Task..."
+          submitting={creating}
         />
       </div>
     </ProtectedRoute>

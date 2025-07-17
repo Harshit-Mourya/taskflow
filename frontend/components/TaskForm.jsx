@@ -1,6 +1,7 @@
 "use client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRef, useEffect } from "react";
 
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,11 +10,21 @@ export default function TaskForm({
   handleChange,
   handleSubmit,
   submitLabel,
+  submittingLabel,
+  submitting,
 }) {
+  const lastInputRef = useRef(null);
+
+  useEffect(() => {
+    if (lastInputRef.current) {
+      lastInputRef.current.focus();
+    }
+  }, [form.subtasks.length]);
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-gray-800 p-8 rounded-2xl shadow-md w-full max-w-md"
+      className="bg-gray-800 p-8 rounded-2xl shadow-md w-full max-w-md my-8"
     >
       <h1 className="text-2xl font-bold mb-6 text-center">
         {submitLabel === "Add Task" ? "Add New Task" : "Edit Task"}
@@ -81,6 +92,7 @@ export default function TaskForm({
           <div key={idx} className="flex items-center mb-2 space-x-2">
             <input
               type="text"
+              ref={idx === form.subtasks.length - 1 ? lastInputRef : null}
               value={sub.text ?? ""}
               onChange={(e) => {
                 const updated = [...form.subtasks];
@@ -129,13 +141,14 @@ export default function TaskForm({
         className="w-full mb-6 px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
         required
         min={new Date().toISOString().split("T")[0]}
+        disabled={submitting}
       />
 
       <button
         type="submit"
         className="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition-colors cursor-pointer"
       >
-        {submitLabel}
+        {submitting ? submittingLabel : submitLabel}
       </button>
     </form>
   );
