@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
   "https://hoppscotch.io",
-
+  "chrome-extension://amknoiejhlmhancpahfcfcfhllgkpbld",
   "https://taskflow-frontend-five.vercel.app",
   "https://vercel.com/harshit-mouryas-projects-0d42cca2/taskflow-frontend/2eerSpT9bLdqqNd6cgS68cW5Cihg",
   "https://actions.githubusercontent.com",
