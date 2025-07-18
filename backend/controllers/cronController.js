@@ -1,17 +1,18 @@
-require("dotenv").config();
-const mongoose = require("mongoose");
 const Task = require("../models/Task");
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MongoDB connected");
-    runRepeatingTaskJob().finally(() => mongoose.disconnect());
-  })
-  .catch((err) => console.error("MongoDB connection error:", err));
+const runCronJob = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (token !== process.env.CRON_SECRET) {
+    return res.status(403).json({ message: "Forbidden: Invalid token" });
+  }
 
-async function runRepeatingTaskJob() {
   try {
+    // 1. Delete old tasks
+    const deleteResult = await Task.deleteMany({
+      createdAt: { $lt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) },
+    });
+
+    // 2. Create new repeatable tasks
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -22,8 +23,6 @@ async function runRepeatingTaskJob() {
         $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
       },
     });
-
-    console.log(`Found ${tasksToRepeat.length} repeatable tasks.`);
 
     for (const task of tasksToRepeat) {
       const newDueDate = getNextDueDate(task.dueDate, task.repeat);
@@ -39,14 +38,18 @@ async function runRepeatingTaskJob() {
       });
 
       await duplicatedTask.save();
-      console.log(`Created new task "${task.title}" for ${task.repeat}.`);
     }
 
-    console.log("✔️ Repeating task job completed.");
+    return res.json({
+      message: "Cron job executed",
+      deleted: deleteResult.deletedCount,
+      repeated: tasksToRepeat.length,
+    });
   } catch (err) {
-    console.error("❌ Error running repeating task job:", err);
+    console.error("Cron error:", err);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};
 
 function getNextDueDate(currentDate, repeatType) {
   const nextDate = new Date(currentDate);
@@ -66,3 +69,5 @@ function getNextDueDate(currentDate, repeatType) {
   }
   return nextDate;
 }
+
+module.exports = { runCronJob };

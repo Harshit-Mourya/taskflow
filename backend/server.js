@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const authRoutes = require("./routes/authRoutes");
 const taskRoutes = require("./routes/taskRoutes");
+const cronRoutes = require("./routes/cron");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   "https://taskflow-frontend-five.vercel.app",
   "https://taskflow-frontend-harshit-mouryas-projects-0d42cca2.vercel.app",
+  "https://actions.githubusercontent.com",
   "https://hoppscotch.io",
   "http://localhost:3000",
 ];
@@ -35,6 +37,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/cron", cronRoutes);
 
 app.get("/", (req, res) => {
   res.send("API running...");
