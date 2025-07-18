@@ -14,12 +14,15 @@ const allowedOrigins = [
   "https://hoppscotch.io",
 
   "https://taskflow-frontend-five.vercel.app",
+  "https://vercel.com/harshit-mouryas-projects-0d42cca2/taskflow-frontend/2eerSpT9bLdqqNd6cgS68cW5Cihg",
   "https://actions.githubusercontent.com",
   "http://localhost:3000",
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
+    console.log("Incoming origin:", origin);
+
     if (!origin) return callback(null, true);
 
     if (allowedOrigins.includes(origin)) {
