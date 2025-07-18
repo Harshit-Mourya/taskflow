@@ -1,0 +1,35 @@
+# .github/workflows/repeat-task.yml
+
+name: Run Repeat Task Daily
+
+on:
+  schedule:
+    - cron: "30 18 * * *" # Runs daily at 12:00 AM IST
+  workflow_dispatch: # allows manual trigger from GitHub UI
+
+jobs:
+  run-repeat-task:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Connect to MongoDB
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: |
+          echo "Mongo URI is loaded" # placeholder for visibility
+
+      - name: Run Repeat Task Script
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: node worker/cronTask.js
