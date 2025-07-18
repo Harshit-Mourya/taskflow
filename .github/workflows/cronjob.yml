@@ -1,0 +1,14 @@
+name: Daily Cron Cleanup
+
+on:
+  schedule:
+    - cron: "30 18 * * *" # 12:00 AM IST = 6:30 PM UTC
+
+jobs:
+  run-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call backend cron endpoint
+        run: |
+          curl -X POST "${{ secrets.CRON_URL }}" \
+          -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
