@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const authRoutes = require("./routes/authRoutes");
 const taskRoutes = require("./routes/taskRoutes");
-const cronRoutes = require("./routes/cron");
+const cronRoutes = require("./routes/cronRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
