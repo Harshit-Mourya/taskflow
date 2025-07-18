@@ -11,10 +11,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
-  "https://taskflow-frontend-five.vercel.app",
-  "https://taskflow-frontend-harshit-mouryas-projects-0d42cca2.vercel.app",
-  "https://actions.githubusercontent.com",
   "https://hoppscotch.io",
+
+  "https://taskflow-frontend-five.vercel.app",
+  "https://actions.githubusercontent.com",
   "http://localhost:3000",
 ];
 
