@@ -21,6 +21,11 @@ const taskSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    repeat: {
+      type: String,
+      enum: ["daily", "weekly", "monthly", "yearly", null],
+      default: null,
+    },
     completed: {
       type: Boolean,
       default: false,
