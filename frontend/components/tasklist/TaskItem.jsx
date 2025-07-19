@@ -93,7 +93,12 @@ export default function TaskItem({ task }) {
         <div className="absolute top-1 right-8 text-white">
           <FontAwesomeIcon
             icon={faRepeat}
-            className="text-blue-400 hover:text-blue-300 cursor-pointer p-2"
+            // className="text-blue-400 hover:text-blue-300 cursor-pointer p-2"
+            className={`text-blue-400 p-2 transition-colors duration-200 ${
+              task.completed
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:text-blue-300 cursor-pointer"
+            }`}
             title={`Repeats ${task.repeat} on this day.`}
             onClick={() => {
               setShowRepeatInfo(true);
@@ -112,17 +117,20 @@ export default function TaskItem({ task }) {
       <div
         className="absolute top-1 right-1  text-white rounded-full px-1.5 py-0.5 hover:bg-gray-600 transition duration-200"
         ref={dropdownRef}
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            setDropdownOpen(!dropdownOpen);
+          }
+        }}
       >
-        <FontAwesomeIcon
-          icon={faEllipsisV}
-          className="w-4 h-4"
-          onClick={() => setDropdownOpen(!dropdownOpen)}
-        />
+        <FontAwesomeIcon icon={faEllipsisV} className="w-4 h-4" />
       </div>
-
       {dropdownOpen && (
         <div
-          className="absolute right-4 top-8 w-25 bg-transparent rounded-md shadow-lg  z-50 space-y-1"
+          className="absolute right-9 top-2 w-25 bg-transparent rounded-md shadow-lg  z-50 space-y-1"
           ref={dropdownRef}
         >
           <Link href={`/edit/${task._id}`}>

@@ -9,6 +9,7 @@ import {
 
 import TasksCreatedVsCompleted from "./TasksCreatedVsCompleted";
 import TasksByPriorityPie from "./TasksByPriorityPie";
+import TasksByStatusChart from "./TasksByStatusChart";
 
 export default function GraphSlider() {
   const sliderRef = useRef(null);
@@ -46,6 +47,9 @@ export default function GraphSlider() {
         ref={sliderRef}
         className="overflow-x-auto whitespace-nowrap flex snap-x snap-mandatory scroll-smooth py-2"
       >
+        <div className="snap-start min-w-full">
+          <TasksByStatusChart />
+        </div>
         <div className="snap-start min-w-full">
           <TasksCreatedVsCompleted />
         </div>

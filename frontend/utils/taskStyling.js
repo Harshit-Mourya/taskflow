@@ -16,6 +16,9 @@ export function getDueStatus(dueDate, completed) {
 
 // Styling based on status
 export function getTaskStyles(status, repeat) {
+  if (status === "completed") {
+    return "border-gray-600";
+  }
   if (repeat && repeat !== "none") {
     return "border-blue-500 bg-blue-900/30";
   }
