@@ -33,6 +33,7 @@ export default function TasksCreatedVsCompleted() {
 
   // State: Dropdown selection + date range
   const [range, setRange] = useState("6");
+
   const [startDate, setStartDate] = useState(
     startOfMonth(subMonths(new Date(), 5))
   );
@@ -90,23 +91,23 @@ export default function TasksCreatedVsCompleted() {
           onChange={(e) => {
             const val = e.target.value;
             setRange(val);
-            if (val !== "custom") {
-              const monthsBack = parseInt(val);
-              const now = new Date();
-              setStartDate(startOfMonth(subMonths(now, monthsBack - 1)));
-              setEndDate(endOfMonth(now));
-            }
+            // if (val !== "custom") {
+            const monthsBack = parseInt(val);
+            const now = new Date();
+            setStartDate(startOfMonth(subMonths(now, monthsBack - 1)));
+            setEndDate(endOfMonth(now));
+            // }
           }}
           className="bg-gray-700 text-white text-sm px-3 py-1 rounded"
         >
           <option value="1">Last 1 Month</option>
           <option value="3">Last 3 Months</option>
           <option value="6">Last 6 Months</option>
-          <option value="custom">Custom Period</option>
+          {/* <option value="custom">Custom Period</option> */}
         </select>
 
         {/* 🛠 Custom Date Inputs */}
-        {range === "custom" && (
+        {/* {range === "custom" && (
           <>
             <div>
               <label className="text-sm text-gray-300 block mb-1">Start:</label>
@@ -127,7 +128,7 @@ export default function TasksCreatedVsCompleted() {
               />
             </div>
           </>
-        )}
+        )} */}
       </div>
 
       {/* Chart or Empty State */}

@@ -8,9 +8,11 @@ const runCronJob = async (req, res) => {
   }
 
   try {
-    // 1. Delete old tasks
+    // 1. Delete old tasks (older than 6 months)
     const deleteResult = await Task.deleteMany({
-      createdAt: { $lt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) },
+      createdAt: {
+        $lt: new Date(new Date().setMonth(new Date().getMonth() - 6)),
+      },
     });
 
     // 2. Create new repeatable tasks
