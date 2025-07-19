@@ -1,4 +1,4 @@
-name: Daily Cron Cleanup
+name: Daily Cron Call
 
 on:
   schedule:

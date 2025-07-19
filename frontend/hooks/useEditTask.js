@@ -10,6 +10,7 @@ export default function useEditTask(id) {
     details: "",
     priority: "",
     subtasks: [],
+    repeat: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,8 @@ export default function useEditTask(id) {
       setLoading(true);
       try {
         const res = await axios.get(`/tasks/${id}`);
-        const { title, dueDate, details, priority, subtasks } = res.data;
+        const { title, dueDate, details, priority, subtasks, repeat } =
+          res.data;
 
         setForm({
           title,
@@ -29,6 +31,7 @@ export default function useEditTask(id) {
           details,
           priority,
           subtasks: subtasks || [],
+          repeat: repeat || "none",
         });
       } catch (err) {
         toast.error("Failed to load task!");

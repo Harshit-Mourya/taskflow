@@ -9,6 +9,7 @@ import {
   faEdit,
   faTrash,
   faEllipsisV,
+  faRepeat,
 } from "@fortawesome/free-solid-svg-icons";
 import SubtaskList from "./SubtaskList";
 import { formatDate } from "@/utils/formatDate";
@@ -17,12 +18,13 @@ import { getDueStatus, getTaskStyles } from "@/utils/taskStyling";
 export default function TaskItem({ task }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [showRepeatInfo, setShowRepeatInfo] = useState(false);
 
   const { toggleTaskCompletion, deleteTask, toggleSubtaskStatus } =
     useTaskActions();
 
   const status = getDueStatus(task.dueDate, task.completed);
-  const taskStyles = getTaskStyles(status);
+  const taskStyles = getTaskStyles(status, task.repeat);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -86,28 +88,27 @@ export default function TaskItem({ task }) {
           )}
         </div>
       </div>
-      {/* <div className="2xl:space-x-2 2xl:ml-0 ml-2 flex flex-col items-center gap-2 2xl:block">
-        <Link href={`/edit/${task._id}`}>
-          <button
-            className={`inline-flex items-center xl:px-3 px-2 xl:py-1 py-2 rounded text-sm transition-all  ${
-              task.completed
-                ? "bg-gray-600 cursor-not-allowed opacity-60"
-                : "bg-yellow-600 hover:bg-yellow-700 cursor-pointer"
-            }`}
-            disabled={task.completed}
-          >
-            <FontAwesomeIcon icon={faEdit} />
-            <span className="xl:block hidden ml-1">Edit</span>
-          </button>
-        </Link>
-        <button
-          className="bg-red-600 hover:bg-red-700 inline-flex items-center xl:px-3 px-2 xl:py-1 py-2 rounded text-sm cursor-pointer "
-          onClick={() => deleteTask(task._id)}
-        >
-          <FontAwesomeIcon icon={faTrash} />
-          <span className="xl:block hidden ml-1">Delete</span>
-        </button>
-      </div> */}
+
+      {task.repeat && task.repeat !== "none" && (
+        <div className="absolute top-1 right-8 text-white">
+          <FontAwesomeIcon
+            icon={faRepeat}
+            className="text-blue-400 hover:text-blue-300 cursor-pointer p-2"
+            title={`Repeats ${task.repeat} on this day.`}
+            onClick={() => {
+              setShowRepeatInfo(true);
+              setTimeout(() => setShowRepeatInfo(false), 5000);
+            }}
+          />
+          {showRepeatInfo && (
+            <div className="absolute right-1  bg-gray-800 text-white text-sm px-3 py-2 rounded shadow-lg z-50 whitespace-nowrap">
+              Repeats <b className=" text-blue-400">{task.repeat}</b>&nbsp;on
+              this day.
+            </div>
+          )}
+        </div>
+      )}
+
       <div
         className="absolute top-1 right-1  text-white rounded-full px-1.5 py-0.5 hover:bg-gray-600 transition duration-200"
         ref={dropdownRef}

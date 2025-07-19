@@ -39,7 +39,7 @@ const getTasks = async (req, res) => {
 
 // CREATE a new task
 const createTask = async (req, res) => {
-  const { title, dueDate, details, priority, subtasks } = req.body;
+  const { title, dueDate, details, priority, subtasks, repeat } = req.body;
 
   if (!title || !dueDate) {
     return res.status(400).json({ error: "Title and due date are required!" });
@@ -51,6 +51,7 @@ const createTask = async (req, res) => {
       dueDate,
       details,
       priority,
+      repeat: repeat || "none",
       user: req.user.id,
       subtasks: Array.isArray(subtasks) ? subtasks : [],
     });
@@ -81,7 +82,8 @@ const getTaskById = async (req, res) => {
 // UPDATE a task
 const updateTask = async (req, res) => {
   const taskId = req.params.id;
-  const { title, dueDate, completed, details, priority, subtasks } = req.body;
+  const { title, dueDate, completed, details, priority, subtasks, repeat } =
+    req.body;
 
   try {
     const task = await Task.findOne({ _id: taskId, user: req.user.id });
@@ -96,6 +98,7 @@ const updateTask = async (req, res) => {
     if (Array.isArray(subtasks)) task.subtasks = subtasks;
     if (dueDate !== undefined) task.dueDate = dueDate;
     if (completed !== undefined) task.completed = completed;
+    if (repeat !== undefined) task.repeat = repeat;
 
     const updatedTask = await task.save();
     res.json(updatedTask);

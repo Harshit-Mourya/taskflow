@@ -15,7 +15,10 @@ export function getDueStatus(dueDate, completed) {
 }
 
 // Styling based on status
-export function getTaskStyles(status) {
+export function getTaskStyles(status, repeat) {
+  if (repeat && repeat !== "none") {
+    return "border-blue-500 bg-blue-900/30";
+  }
   switch (status) {
     case "overdue":
       return "border-red-500 bg-red-900/30";

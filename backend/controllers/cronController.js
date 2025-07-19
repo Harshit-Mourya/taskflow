@@ -2,7 +2,6 @@ const Task = require("../models/Task");
 
 const runCronJob = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
-  console.log("token: ", token);
 
   if (token !== process.env.CRON_SECRET) {
     return res.status(403).json({ message: "Forbidden: Invalid token!" });
@@ -19,7 +18,7 @@ const runCronJob = async (req, res) => {
     today.setHours(0, 0, 0, 0);
 
     const tasksToRepeat = await Task.find({
-      repeat: { $ne: null },
+      repeat: { $ne: "none" },
       dueDate: {
         $gte: today,
         $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
@@ -42,14 +41,16 @@ const runCronJob = async (req, res) => {
       await duplicatedTask.save();
     }
 
+    console.log("Cron job executed!");
+
     return res.json({
-      message: "Cron job executed",
+      message: "Cron job executed!",
       deleted: deleteResult.deletedCount,
       repeated: tasksToRepeat.length,
     });
   } catch (err) {
     console.error("Cron error:", err);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error!" });
   }
 };
 

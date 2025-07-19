@@ -16,6 +16,7 @@ const useAddTask = () => {
       details: "",
       priority: "",
       subtasks: [],
+      repeat: "none",
     }),
     []
   );

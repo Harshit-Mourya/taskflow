@@ -75,6 +75,24 @@ export default function TaskForm({
         </div>
       </div>
 
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-300 mb-2">
+          Repeat
+        </label>
+        <select
+          name="repeat"
+          value={form.repeat || "none"}
+          onChange={handleChange}
+          className="w-full px-4 py-2 border border-gray-700 rounded bg-gray-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+        >
+          <option value="none">None</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+        </select>
+      </div>
+
       <textarea
         name="details"
         placeholder="Details (optional)"
